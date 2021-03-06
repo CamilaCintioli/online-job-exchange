@@ -1,15 +1,15 @@
 import React from 'react'
-import { Formik, Form } from 'formik'
+import { Formik } from 'formik'
+import * as yup from 'yup'
 
 import DateField from './fields/DateField'
 import OrganizationField from './fields/OrganizationField'
 import TextField from './fields/TextField'
 import TextAreaField from './fields/TextAreaField'
-
-import useI18n from '../../hooks/useI18n'
+import Form from './Form'
 
 export default function NewJobForm(): JSX.Element {
-    const { t } = useI18n()
+
     return (
         <Formik initialValues={{
             organization: "",
@@ -19,7 +19,17 @@ export default function NewJobForm(): JSX.Element {
                 dateFrom: null,
                 dateTo: null,
             }
-        }} onSubmit={(values) => { }}>
+        }} onSubmit={(values) => { }}
+            validationSchema={yup.object({
+                organization: yup.string().trim().required(),
+                job: yup.object({
+                    name: yup.string().trim().required(),
+                    description: yup.string().trim().required(),
+                    dateFrom: yup.date().required(),
+                    dateTo: yup.date().required(),
+                }).required()
+            })}
+        >
             <Form>
                 <OrganizationField
                     label="job.form.organization.label"
@@ -40,7 +50,7 @@ export default function NewJobForm(): JSX.Element {
                     name="job.description"
                     placeholder="job.form.description.placeholder"
                 />
-                
+
                 <DateField
                     label="job.form.dateForm.label"
                     id="dateFrom"

@@ -1,6 +1,11 @@
 import React from 'react';
 import { useField } from 'formik'
+
 import useI18n from '../../../hooks/useI18n'
+import Label from '../../common/Label'
+import LabelName from '../../common/LabelName'
+import Input from '../../common/Input'
+import ErrorMessage from '../../common/ErrorMessage'
 
 interface Props {
     id: string
@@ -16,17 +21,16 @@ export default function TextField({
     const [field, meta, helpers] = useField<string>(props);
 
     return (
-        <label>
-            {t(label)}
-            <input
+        <Label>
+            <LabelName>{t(label)}</LabelName>
+            <Input
                 {...field}
                 placeholder={t(props.placeholder)}
             />
-            <input />
             {meta.touched && meta.error ? (
-                <div className="error">{meta.error}</div>
+                <ErrorMessage>{meta.error}</ErrorMessage>
             ) : null}
-        </label>
+        </Label>
     );
 }
 
